@@ -13,7 +13,10 @@ final class TemplateTypeResolver
     public function resolve(Type $type): bool
     {
         if ($type instanceof ObjectType) {
-            return $type->isInstanceOf('Nette\Application\UI\Template')->yes() || $type->isInstanceOf('Nette\Application\UI\ITemplate')->yes();
+            return $type->isInstanceOf('Nette\Application\UI\Template')->yes() ||
+             $type->isInstanceOf('Nette\Application\UI\ITemplate')->yes() ||
+             $type->isInstanceOf('Latte\Runtime\Template')->yes()
+             ;
         } elseif ($type instanceof UnionType) {
             foreach ($type->getTypes() as $unionType) {
                 if ($this->resolve($unionType)) {

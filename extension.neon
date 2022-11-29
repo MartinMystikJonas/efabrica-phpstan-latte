@@ -47,7 +47,7 @@ services:
 
     # Latte template resolvers
     - Efabrica\PHPStanLatte\LatteTemplateResolver\NetteApplicationUIPresenter
-    - Efabrica\PHPStanLatte\LatteTemplateResolver\NetteApplicationUIControl
+    - Efabrica\PHPStanLatte\LatteTemplateResolver\NetteApplicationUIControlRender
 
     # Type resolvers
     - Efabrica\PHPStanLatte\Resolver\TypeResolver\TemplateTypeResolver

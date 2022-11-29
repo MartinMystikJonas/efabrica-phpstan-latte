@@ -10,6 +10,8 @@ use Efabrica\PHPStanLatte\Collector\Finder\TemplatePathFinder;
 use Efabrica\PHPStanLatte\Collector\Finder\VariableFinder;
 use Efabrica\PHPStanLatte\Collector\ValueObject\CollectedResolvedNode;
 use Efabrica\PHPStanLatte\Template\Template;
+use PHPStan\BetterReflection\Reflection\ReflectionClass;
+use PHPStan\BetterReflection\Reflection\ReflectionMethod;
 use PHPStan\Node\CollectedDataNode;
 use PHPStan\PhpDoc\TypeStringResolver;
 
@@ -39,6 +41,20 @@ abstract class AbstractTemplateResolver implements LatteTemplateResolverInterfac
         $this->templatePathFinder = new TemplatePathFinder($collectedDataNode);
 
         return $this->getTemplates($resolvedNode, $collectedDataNode);
+    }
+
+    /**
+     * @return ReflectionMethod[]
+     */
+    protected function getMethodsMatching(ReflectionClass $reflectionClass, string $pattern): array
+    {
+        $methods = [];
+        foreach ($reflectionClass->getMethods() as $reflectionMethod) {
+            if (preg_match($pattern, $reflectionMethod->getName()) !== false) {
+                $methods[] = $reflectionMethod;
+            }
+        }
+        return $methods;
     }
 
     /**

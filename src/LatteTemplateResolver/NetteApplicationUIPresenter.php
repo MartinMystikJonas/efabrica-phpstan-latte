@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Efabrica\PHPStanLatte\LatteTemplateResolver;
 
+use Efabrica\PHPStanLatte\Collector\ValueObject\CollectedResolvedNode;
 use Efabrica\PHPStanLatte\Template\Template;
 use Efabrica\PHPStanLatte\Template\Variable;
 use PHPStan\BetterReflection\Reflection\ReflectionClass;
@@ -18,7 +19,7 @@ final class NetteApplicationUIPresenter extends AbstractClassTemplateResolver
         return ['Nette\Application\UI\Presenter'];
     }
 
-    protected function getClassTemplates(ReflectionClass $reflectionClass, CollectedDataNode $collectedDataNode): array
+    protected function getClassTemplates(CollectedResolvedNode $node, CollectedDataNode $collectedDataNode, ReflectionClass $reflectionClass): array
     {
         $className = $reflectionClass->getName();
         $presenterType = new ObjectType($className);

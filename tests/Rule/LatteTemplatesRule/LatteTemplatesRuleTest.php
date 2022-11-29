@@ -37,9 +37,9 @@ abstract class LatteTemplatesRuleTest extends RuleTestCase
     {
         $actualErrors = $this->gatherAnalyserErrors($files);
         $strictlyTypedSprintf = static function (int $line, string $message, string $file, ?string $tip): string {
-            $message = $file . "\n" . sprintf('%02d: %s', $line, $message);
+            $message = $file . ":" . sprintf('%02d: %s', $line, $message);
             if ($tip !== null) {
-                $message .= "\n    💡 " . $tip;
+                $message .= " | " . $tip;
             }
             return $message;
         };

@@ -47,6 +47,7 @@ final class VariableFinder
     public function find(string $className, string $methodName): array
     {
         return $this->findMethodCalls($className, $methodName);
+        // TODO also check callers
     }
 
     /**

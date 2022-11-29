@@ -18,7 +18,7 @@ use PHPStan\Type\ObjectType;
 
 abstract class AbstractClassTemplateResolver extends AbstractTemplateResolver
 {
-    private const PARAM_CLASS_NAME = 'className';
+    protected const PARAM_CLASS_NAME = 'className';
 
     public function collect(Node $node, Scope $scope): ?CollectedResolvedNode
     {
@@ -44,11 +44,16 @@ abstract class AbstractClassTemplateResolver extends AbstractTemplateResolver
         $objectType = new ObjectType($className);
         foreach ($this->getSupportedClasses() as $supportedClass) {
             if ($objectType->isInstanceOf($supportedClass)->yes()) {
-                return new CollectedResolvedNode(static::class, [self::PARAM_CLASS_NAME => $className]);
+                return new CollectedResolvedNode(static::class, $this->createCollectedResolvedNodeParams($node, $scope, $className));
             }
         }
 
         return null;
+    }
+
+    protected function createCollectedResolvedNodeParams(Node $node, Scope $scope, $className): array
+    {
+        return [self::PARAM_CLASS_NAME => $className];
     }
 
     /**
@@ -64,7 +69,7 @@ abstract class AbstractClassTemplateResolver extends AbstractTemplateResolver
             return [];
         }
 
-        return $this->getClassTemplates($reflectionClass, $collectedDataNode);
+        return $this->getClassTemplates($resolvedNode, $collectedDataNode, $reflectionClass);
     }
 
     /**
@@ -89,5 +94,5 @@ abstract class AbstractClassTemplateResolver extends AbstractTemplateResolver
     /**
      * @return Template[]
      */
-    abstract protected function getClassTemplates(ReflectionClass $resolveClass, CollectedDataNode $collectedDataNode): array;
+    abstract protected function getClassTemplates(CollectedResolvedNode $resolvedNode, CollectedDataNode $collectedDataNode, ReflectionClass $resolveClass): array;
 }
